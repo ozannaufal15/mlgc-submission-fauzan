@@ -1,21 +1,20 @@
 const express = require('express');
-const app = express();
 const tf = require("@tensorflow/tfjs-node");
-const jimp = require("jimp")
 const multer = require("multer")
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const cors = require("cors");
 const { nanoid } = require('nanoid');
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
+const { initializeApp, applicationDefault } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+
+const app = express();
 
 initializeApp({
-  credential: applicationDefault()
+    credential: applicationDefault()
 });
 
 const db = getFirestore();
-
 
 app.use(express.json());
 app.use(cors())
@@ -60,14 +59,14 @@ app.post('/predict', upload.single("image"), async (req, res, next) => {
     }
 });
 
-app.get("/predict/histories", async(req,res,next)=>{
+app.get("/predict/histories", async (req, res, next) => {
     try {
         const snapshot = await db.collection('predictions').get();
         snapshot.forEach(doc => {
-        console.log(doc.id, '=>', doc.data());
+            console.log(doc.id, '=>', doc.data());
         });
-        const data = snapshot.docs.map((doc)=>({"id":doc.id, "history":doc.data()}))
-        res.status(200).json({status:"success", data})
+        const data = snapshot.docs.map((doc) => ({ "id": doc.id, "history": doc.data() }))
+        res.status(200).json({ status: "success", data })
     } catch (error) {
         next(error)
     }
