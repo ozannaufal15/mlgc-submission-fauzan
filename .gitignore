@@ -1,0 +1,5 @@
+*Zone.Identifier
+node_modules/
+*adminsdk*
+test/
+model/
