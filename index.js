@@ -53,7 +53,7 @@ app.post('/predict', upload.single("image"), async (req, res, next) => {
         }
         console.log(response)
         await db.collection('predictions').doc(data.id).set(data);
-        res.status(200).json(response)
+        res.status(201).json(response)
     } catch (error) {
         next(error)
     }
