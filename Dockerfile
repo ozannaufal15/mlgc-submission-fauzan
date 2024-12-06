@@ -2,11 +2,7 @@ FROM node:22
 
 WORKDIR /home/node/app
 
-ENV PORT 8080
-
-COPY package.json ./
-
-COPY package-lock.json ./
+COPY package*.json ./
 
 RUN npm install
 
